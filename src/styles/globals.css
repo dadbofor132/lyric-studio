@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 14%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 14%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 263 70% 50%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 33% 22%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 22%;
+    --input: 217 33% 22%;
+    --ring: 263 70% 50%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Hide scrollbars but allow scrolling */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* React Flow customization */
+.react-flow__node {
+  cursor: grab;
+}
+
+.react-flow__node:active {
+  cursor: grabbing;
+}
+
+.react-flow__minimap {
+  background: hsl(222 47% 14%) !important;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.react-flow__controls {
+  background: hsl(222 47% 14%) !important;
+  border-radius: 8px;
+  border: 1px solid hsl(217 33% 22%);
+}
+
+.react-flow__controls-button {
+  background: transparent !important;
+  border-bottom: 1px solid hsl(217 33% 22%) !important;
+  fill: hsl(210 40% 98%) !important;
+}
+
+.react-flow__controls-button:hover {
+  background: hsl(217 33% 22%) !important;
+}
+
+.react-flow__background {
+  background: hsl(222 47% 11%) !important;
+}
+
+/* Block type colors */
+.block-verse {
+  --block-color: 217 91% 60%;
+}
+.block-chorus {
+  --block-color: 263 70% 55%;
+}
+.block-bridge {
+  --block-color: 25 95% 53%;
+}
+.block-pre-chorus {
+  --block-color: 330 81% 60%;
+}
+.block-intro {
+  --block-color: 142 76% 36%;
+}
+.block-outro {
+  --block-color: 215 14% 45%;
+}
+.block-hook {
+  --block-color: 0 84% 60%;
+}
+.block-custom {
+  --block-color: 215 14% 45%;
+}
+
+/* Drag handle for title bar area */
+.drag-region {
+  -webkit-app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}
