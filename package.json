@@ -1,7 +1,6 @@
 {
   "name": "lyric-studio",
   "version": "1.0.0",
-  "type": "module",
   "description": "Visual songwriting app with AI lyric generation",
   "main": "dist-electron/main.js",
   "scripts": {

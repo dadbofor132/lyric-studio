@@ -7,18 +7,11 @@ export function registerVibeHandlers() {
     return dbHelpers.getAllVibes()
   })
 
-  ipcMain.handle('vibes:get', async (_event, id: string) => {
+  ipcMain.handle('vibes:get', async (_event: any, id: string) => {
     return dbHelpers.getVibe(id)
   })
 
-  ipcMain.handle('vibes:create', async (_event, data: {
-    name: string
-    description?: string
-    keywords: string[]
-    colorPalette?: { primary: string; secondary: string; accent: string }
-    sunoStyleHints?: string
-    aiPromptPrefix?: string
-  }) => {
+  ipcMain.handle('vibes:create', async (_event: any, data: any) => {
     const vibe = {
       id: uuid(),
       name: data.name,
@@ -35,7 +28,7 @@ export function registerVibeHandlers() {
     return vibe
   })
 
-  ipcMain.handle('vibes:delete', async (_event, id: string) => {
+  ipcMain.handle('vibes:delete', async (_event: any, id: string) => {
     const vibe = dbHelpers.getVibe(id)
     if (vibe?.isBuiltIn) {
       return { success: false, error: 'Cannot delete built-in vibes' }

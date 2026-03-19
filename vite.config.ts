@@ -10,25 +10,12 @@ export default defineConfig({
     electron([
       {
         entry: 'electron/main.ts',
-        vite: {
-          build: {
-            outDir: 'dist-electron',
-            rollupOptions: {
-              external: ['better-sqlite3']
-            }
-          }
-        }
       },
       {
         entry: 'electron/preload.ts',
         onstart(options) {
           options.reload()
         },
-        vite: {
-          build: {
-            outDir: 'dist-electron'
-          }
-        }
       }
     ]),
     renderer()
@@ -37,11 +24,6 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
       '@electron': path.resolve(__dirname, './electron')
-    }
-  },
-  build: {
-    rollupOptions: {
-      external: ['better-sqlite3']
     }
   }
 })

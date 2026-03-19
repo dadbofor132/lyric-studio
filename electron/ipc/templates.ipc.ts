@@ -7,17 +7,11 @@ export function registerTemplateHandlers() {
     return dbHelpers.getAllTemplates()
   })
 
-  ipcMain.handle('templates:get', async (_event, id: string) => {
+  ipcMain.handle('templates:get', async (_event: any, id: string) => {
     return dbHelpers.getTemplate(id)
   })
 
-  ipcMain.handle('templates:create', async (_event, data: {
-    name: string
-    description?: string
-    genre?: string
-    structure: any[]
-    defaultVibeId?: string
-  }) => {
+  ipcMain.handle('templates:create', async (_event: any, data: any) => {
     const template = {
       id: uuid(),
       name: data.name,
@@ -33,7 +27,7 @@ export function registerTemplateHandlers() {
     return template
   })
 
-  ipcMain.handle('templates:delete', async (_event, id: string) => {
+  ipcMain.handle('templates:delete', async (_event: any, id: string) => {
     const template = dbHelpers.getTemplate(id)
     if (template?.isBuiltIn) {
       return { success: false, error: 'Cannot delete built-in templates' }

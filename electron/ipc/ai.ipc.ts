@@ -5,25 +5,13 @@ import { dbHelpers } from '../db'
 let openRouterApiKey: string | null = null
 
 export function registerAIHandlers() {
-  ipcMain.handle('ai:initialize', async (_event, apiKey: string) => {
+  ipcMain.handle('ai:initialize', async (_event: any, apiKey: string) => {
     openRouterApiKey = apiKey
     dbHelpers.setSetting('openrouter_api_key', apiKey)
     return { success: true }
   })
 
-  ipcMain.handle('ai:generate', async (_event, params: {
-    blockType: string
-    context?: string
-    vibe?: {
-      name: string
-      keywords: string[]
-      aiPromptPrefix?: string
-    }
-    instructions?: string
-    model?: string
-    songId?: string
-    blockId?: string
-  }) => {
+  ipcMain.handle('ai:generate', async (_event: any, params: any) => {
     if (!openRouterApiKey) {
       const saved = dbHelpers.getSetting('openrouter_api_key')
       if (saved) {
@@ -60,7 +48,6 @@ export function registerAIHandlers() {
     const data = await response.json()
     const result = data.choices?.[0]?.message?.content || ''
 
-    // Log generation
     dbHelpers.addGeneration({
       id: uuid(),
       songId: params.songId,
@@ -74,16 +61,7 @@ export function registerAIHandlers() {
     return result
   })
 
-  ipcMain.handle('ai:variation', async (_event, params: {
-    original: string
-    variationType: 'subtle' | 'moderate' | 'experimental'
-    vibe?: {
-      name: string
-      keywords: string[]
-      aiPromptPrefix?: string
-    }
-    model?: string
-  }) => {
+  ipcMain.handle('ai:variation', async (_event: any, params: any) => {
     if (!openRouterApiKey) {
       const saved = dbHelpers.getSetting('openrouter_api_key')
       if (saved) {
@@ -95,7 +73,7 @@ export function registerAIHandlers() {
 
     const model = params.model || 'anthropic/claude-sonnet-4'
 
-    const intensityMap = {
+    const intensityMap: Record<string, string> = {
       subtle: 'Make small changes to word choice and phrasing while preserving the core meaning and structure.',
       moderate: 'Rewrite with different imagery and metaphors while keeping the overall theme and emotional tone.',
       experimental: 'Completely reimagine these lyrics with fresh perspective, unexpected imagery, and new stylistic approach.',
@@ -127,10 +105,7 @@ export function registerAIHandlers() {
     return data.choices?.[0]?.message?.content || ''
   })
 
-  ipcMain.handle('ai:research-vibe', async (_event, params: {
-    keywords: string[]
-    genre?: string
-  }) => {
+  ipcMain.handle('ai:research-vibe', async (_event: any, params: any) => {
     if (!openRouterApiKey) {
       const saved = dbHelpers.getSetting('openrouter_api_key')
       if (saved) {
@@ -194,7 +169,7 @@ Return only valid JSON, no markdown or explanations.`
   })
 }
 
-function buildSystemPrompt(vibe?: { name: string; keywords: string[]; aiPromptPrefix?: string }): string {
+function buildSystemPrompt(vibe?: any): string {
   let prompt = `You are a talented songwriter specializing in creating evocative, memorable lyrics.
 Write lyrics that are:
 - Emotionally resonant and authentic
@@ -212,11 +187,7 @@ ${vibe.aiPromptPrefix || ''}`
   return prompt
 }
 
-function buildGenerationPrompt(
-  blockType: string,
-  context?: string,
-  instructions?: string
-): string {
+function buildGenerationPrompt(blockType: string, context?: string, instructions?: string): string {
   const blockGuidance: Record<string, string> = {
     verse: 'Write a verse (4-8 lines) that tells a story or describes a scene. Each line should flow naturally into the next.',
     chorus: 'Write a memorable, emotionally powerful chorus (4-6 lines) with a strong hook that listeners will want to sing along to.',

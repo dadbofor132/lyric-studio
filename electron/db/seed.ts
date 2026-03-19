@@ -1,7 +1,6 @@
 import { v4 as uuid } from 'uuid'
-import type { Database } from './index'
 
-export function seedDefaults(db: Database) {
+export function seedDefaults(db: any) {
   const now = new Date().toISOString()
 
   // Summer Nostalgic Vibe
@@ -137,7 +136,7 @@ export function seedDefaults(db: Database) {
       description: template.description,
       genre: template.genre,
       structure: JSON.stringify(template.structure),
-      defaultVibeId: template.defaultVibeId,
+      defaultVibeId: (template as any).defaultVibeId,
       isBuiltIn: true,
       createdAt: now,
     })

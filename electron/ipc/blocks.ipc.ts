@@ -3,19 +3,11 @@ import { v4 as uuid } from 'uuid'
 import { dbHelpers } from '../db'
 
 export function registerBlockHandlers() {
-  ipcMain.handle('blocks:getAll', async (_event, songId: string) => {
+  ipcMain.handle('blocks:getAll', async (_event: any, songId: string) => {
     return dbHelpers.getBlocks(songId)
   })
 
-  ipcMain.handle('blocks:create', async (_event, data: {
-    songId: string
-    type: string
-    label?: string
-    content?: string
-    position: { x: number; y: number }
-    width?: number
-    metadata?: any
-  }) => {
+  ipcMain.handle('blocks:create', async (_event: any, data: any) => {
     const now = new Date().toISOString()
     const block = {
       id: uuid(),
@@ -39,7 +31,7 @@ export function registerBlockHandlers() {
     return block
   })
 
-  ipcMain.handle('blocks:update', async (_event, id: string, data: any) => {
+  ipcMain.handle('blocks:update', async (_event: any, id: string, data: any) => {
     const now = new Date().toISOString()
     const block = dbHelpers.updateBlock(id, { ...data, updatedAt: now })
 
@@ -50,7 +42,7 @@ export function registerBlockHandlers() {
     return block
   })
 
-  ipcMain.handle('blocks:delete', async (_event, id: string) => {
+  ipcMain.handle('blocks:delete', async (_event: any, id: string) => {
     const block = dbHelpers.getBlock(id)
     dbHelpers.deleteBlock(id)
 
@@ -61,13 +53,13 @@ export function registerBlockHandlers() {
     return { success: true }
   })
 
-  ipcMain.handle('blocks:duplicate', async (_event, id: string) => {
+  ipcMain.handle('blocks:duplicate', async (_event: any, id: string) => {
     const original = dbHelpers.getBlock(id)
     if (!original) return null
 
     const now = new Date().toISOString()
     const allBlocks = dbHelpers.getBlocks(original.songId)
-    const existingVersions = allBlocks.filter(b => b.parentBlockId === id)
+    const existingVersions = allBlocks.filter((b: any) => b.parentBlockId === id)
     const version = existingVersions.length + 2
 
     const newBlock = {

@@ -1,6 +1,5 @@
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow } from 'electron'
 import path from 'path'
-import { fileURLToPath } from 'url'
 import { initDatabase } from './db'
 import { registerSongHandlers } from './ipc/songs.ipc'
 import { registerBlockHandlers } from './ipc/blocks.ipc'
@@ -8,9 +7,6 @@ import { registerTemplateHandlers } from './ipc/templates.ipc'
 import { registerVibeHandlers } from './ipc/vibes.ipc'
 import { registerAIHandlers } from './ipc/ai.ipc'
 import { registerSettingsHandlers } from './ipc/settings.ipc'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
 const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
 
@@ -26,9 +22,8 @@ async function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
       nodeIntegration: false,
       contextIsolation: true,
+      sandbox: false,
     },
-    titleBarStyle: 'hiddenInset',
-    trafficLightPosition: { x: 15, y: 15 },
     backgroundColor: '#1a1a2e',
   })
 

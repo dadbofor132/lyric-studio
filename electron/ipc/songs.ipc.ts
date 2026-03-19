@@ -1,23 +1,17 @@
 import { ipcMain } from 'electron'
 import { v4 as uuid } from 'uuid'
-import { dbHelpers, saveDatabase, getDb } from '../db'
+import { dbHelpers } from '../db'
 
 export function registerSongHandlers() {
   ipcMain.handle('songs:getAll', async () => {
     return dbHelpers.getAllSongs()
   })
 
-  ipcMain.handle('songs:get', async (_event, id: string) => {
+  ipcMain.handle('songs:get', async (_event: any, id: string) => {
     return dbHelpers.getSong(id)
   })
 
-  ipcMain.handle('songs:create', async (_event, data: {
-    title: string
-    description?: string
-    vibeId?: string
-    templateId?: string
-    blocks?: any[]
-  }) => {
+  ipcMain.handle('songs:create', async (_event: any, data: any) => {
     const now = new Date().toISOString()
     const songId = uuid()
 
@@ -33,7 +27,6 @@ export function registerSongHandlers() {
 
     dbHelpers.addSong(song)
 
-    // Create blocks if provided (from template)
     if (data.blocks && data.blocks.length > 0) {
       for (const block of data.blocks) {
         dbHelpers.addBlock({
@@ -55,11 +48,11 @@ export function registerSongHandlers() {
     return song
   })
 
-  ipcMain.handle('songs:update', async (_event, id: string, data: any) => {
+  ipcMain.handle('songs:update', async (_event: any, id: string, data: any) => {
     return dbHelpers.updateSong(id, { ...data, updatedAt: new Date().toISOString() })
   })
 
-  ipcMain.handle('songs:delete', async (_event, id: string) => {
+  ipcMain.handle('songs:delete', async (_event: any, id: string) => {
     dbHelpers.deleteSong(id)
     return { success: true }
   })

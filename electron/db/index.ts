@@ -3,7 +3,7 @@ import path from 'path'
 import fs from 'fs'
 import { seedDefaults } from './seed'
 
-export interface Database {
+interface Database {
   songs: any[]
   blocks: any[]
   templates: any[]
@@ -63,41 +63,41 @@ export function saveDatabase() {
 export const dbHelpers = {
   // Songs
   getAllSongs: () => db.songs,
-  getSong: (id: string) => db.songs.find(s => s.id === id),
+  getSong: (id: string) => db.songs.find((s: any) => s.id === id),
   addSong: (song: any) => { db.songs.push(song); saveDatabase(); return song },
   updateSong: (id: string, data: any) => {
-    const idx = db.songs.findIndex(s => s.id === id)
+    const idx = db.songs.findIndex((s: any) => s.id === id)
     if (idx !== -1) { db.songs[idx] = { ...db.songs[idx], ...data }; saveDatabase() }
     return db.songs[idx]
   },
   deleteSong: (id: string) => {
-    db.songs = db.songs.filter(s => s.id !== id)
-    db.blocks = db.blocks.filter(b => b.songId !== id)
+    db.songs = db.songs.filter((s: any) => s.id !== id)
+    db.blocks = db.blocks.filter((b: any) => b.songId !== id)
     saveDatabase()
   },
 
   // Blocks
-  getBlocks: (songId: string) => db.blocks.filter(b => b.songId === songId),
-  getBlock: (id: string) => db.blocks.find(b => b.id === id),
+  getBlocks: (songId: string) => db.blocks.filter((b: any) => b.songId === songId),
+  getBlock: (id: string) => db.blocks.find((b: any) => b.id === id),
   addBlock: (block: any) => { db.blocks.push(block); saveDatabase(); return block },
   updateBlock: (id: string, data: any) => {
-    const idx = db.blocks.findIndex(b => b.id === id)
+    const idx = db.blocks.findIndex((b: any) => b.id === id)
     if (idx !== -1) { db.blocks[idx] = { ...db.blocks[idx], ...data }; saveDatabase() }
     return db.blocks[idx]
   },
-  deleteBlock: (id: string) => { db.blocks = db.blocks.filter(b => b.id !== id); saveDatabase() },
+  deleteBlock: (id: string) => { db.blocks = db.blocks.filter((b: any) => b.id !== id); saveDatabase() },
 
   // Templates
   getAllTemplates: () => db.templates,
-  getTemplate: (id: string) => db.templates.find(t => t.id === id),
+  getTemplate: (id: string) => db.templates.find((t: any) => t.id === id),
   addTemplate: (template: any) => { db.templates.push(template); saveDatabase(); return template },
-  deleteTemplate: (id: string) => { db.templates = db.templates.filter(t => t.id !== id); saveDatabase() },
+  deleteTemplate: (id: string) => { db.templates = db.templates.filter((t: any) => t.id !== id); saveDatabase() },
 
   // Vibes
   getAllVibes: () => db.vibes,
-  getVibe: (id: string) => db.vibes.find(v => v.id === id),
+  getVibe: (id: string) => db.vibes.find((v: any) => v.id === id),
   addVibe: (vibe: any) => { db.vibes.push(vibe); saveDatabase(); return vibe },
-  deleteVibe: (id: string) => { db.vibes = db.vibes.filter(v => v.id !== id); saveDatabase() },
+  deleteVibe: (id: string) => { db.vibes = db.vibes.filter((v: any) => v.id !== id); saveDatabase() },
 
   // Settings
   getSetting: (key: string) => db.settings[key],
